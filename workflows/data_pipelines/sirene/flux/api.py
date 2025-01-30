@@ -28,6 +28,7 @@ class SireneApiClient(ApiClient):
         data = self.call_insee_api(endpoint, data_property)
         # Process data in chunks to avoid memory issues
         chunk_size = 100000
+        logging.info("Data is downloaded. Flattening the content..")
 
         if data_property == "unitesLegales":
             flux = [
@@ -54,6 +55,7 @@ class SireneApiClient(ApiClient):
                 logging.info(
                     f"Processed chunk {i//chunk_size + 1} of {(len(data)-1)//chunk_size + 1}"
                 )
+            logging.info("Data has been flatten. Concatenating the chunks..")
 
             # Concatenate all chunks
             return pd.concat(dfs, ignore_index=True)
